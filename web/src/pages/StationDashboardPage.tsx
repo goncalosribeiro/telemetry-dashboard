@@ -1,4 +1,5 @@
 
+import { EquipmentCard } from "../components/EquipmentCard";
 import { StationHeader } from "../components/StationHeader";
 import { mockStation } from "../domain/mockStation";
 
@@ -13,19 +14,10 @@ export function StationDashboardPage() {
 
             <section>
                 {station.equipments.map((equipment) => (
-                    <article key={equipment.id}>
-                        <h2>{equipment.name}</h2>
-                        <p>{equipment.operationalStatus}</p>
-
-                        <ul>
-                            {equipment.measurements.map((measurement) => (
-                                <li key={measurement.key}>
-                                    {measurement.label}: {measurement.value}
-                                    {measurement.unit ? ` ${measurement.unit}` : ""}
-                                </li>
-                            ))}
-                        </ul>
-                    </article>
+                    <EquipmentCard
+                        key={equipment.id}
+                        equipment={equipment}
+                    />
                 ))}
             </section>
         </main>
