@@ -1,38 +1,20 @@
+import type { Station } from "../domain/Station";
+
 type StationHeaderProps = {
-    stationName: string;
-    operationalStatus: "running" | "stopped";
-    connectionStatus: "online" | "offline";
-    lastUpdatedAt: Date;
+    station: Station;
 };
 
-export function StationHeader({
-    stationName,
-    operationalStatus,
-    connectionStatus,
-    lastUpdatedAt,
-}: StationHeaderProps) {
+export function StationHeader({ station }: StationHeaderProps) {
     return (
         <header>
-            <h1>{stationName}</h1>
+            <h1>{station.name}</h1>
 
-            <div>
-                <dl>
-                    <div>
-                        <dt>Operational status</dt>
-                        <dd>{operationalStatus}</dd>
-                    </div>
+            <p>Connection: {station.connectionStatus}</p>
 
-                    <div>
-                        <dt>Connection</dt>
-                        <dd>{connectionStatus}</dd>
-                    </div>
-
-                    <div>
-                        <dt>Last update</dt>
-                        <dd>{lastUpdatedAt.toLocaleTimeString()}</dd>
-                    </div>
-                </dl>
-            </div>
+            <p>
+                Last updated:{" "}
+                {station.lastUpdatedAt.toLocaleTimeString()}
+            </p>
         </header>
     );
 }
