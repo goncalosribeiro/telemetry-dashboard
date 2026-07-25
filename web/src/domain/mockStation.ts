@@ -13,10 +13,12 @@ export const mockStation: Station = {
       operationalStatus: "running",
       measurements: [
         {
-          key: "power",
-          label: "Power",
-          value: 15.8,
-          unit: "kW",
+          key: "flow-rate",
+          label: "Flow rate",
+          value: 15.4,
+          unit: "m³/h",
+          minValue: 14,
+          maxValue: 18,
         },
         {
           key: "pressure",

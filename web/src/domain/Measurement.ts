@@ -3,4 +3,6 @@ export type Measurement = {
   label: string;
   value: number;
   unit?: string;
+  minValue?: number;
+  maxValue?: number;
 };
