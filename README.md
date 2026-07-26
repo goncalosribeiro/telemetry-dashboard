@@ -182,18 +182,6 @@ The Visual Flow module complements traditional dashboards by representing the mo
 
 ---
 
-## Future Integrations
-
-The architecture is designed to support industrial integrations such as:
-
-- MQTT brokers
-- OPC-UA gateways
-- PLCs
-- SCADA platforms
-- Cloud telemetry services
-
----
-
 ## Why This Project?
 
 Industrial telemetry platforms combine several engineering challenges rarely found together in typical portfolio projects.
@@ -201,9 +189,3 @@ Industrial telemetry platforms combine several engineering challenges rarely fou
 AquaPulse brings together frontend architecture, backend services, real-time communication, interactive visualisation and domain modelling in a single application inspired by real industrial systems.
 
 The objective is not simply to build a dashboard, but to demonstrate the design of a complete monitoring platform that could evolve towards a production-ready solution.
-
----
-
-## License
-
-This project is available under the MIT License.

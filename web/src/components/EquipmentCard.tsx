@@ -1,5 +1,6 @@
 import type { Equipment } from "../domain/Equipment";
 import { formatEquipmentType } from "../utils/formatEquipmentType";
+import { OperationalStatusBadge } from "./equipment-status/OperationalStatusBadge";
 
 type EquipmentCardProps = {
     equipment: Equipment;
@@ -14,7 +15,7 @@ export function EquipmentCard({
                 <h2 className="text-lg font-semibold">
                     {equipment.name}</h2>
                 <p className="mt-1 text-sm text-slate-400">{formatEquipmentType(equipment.type)}</p>
-                <p className="mt-3 text-sm font-medium">{equipment.operationalStatus}</p>
+                <OperationalStatusBadge status={equipment.operationalStatus} />
             </header>
             <ul className="mt-4 space-y-3">
                 {equipment.measurements.map((measurement) => (
