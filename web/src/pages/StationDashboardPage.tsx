@@ -52,12 +52,20 @@ export function StationDashboardPage() {
                 <StationHeader station={station} />
 
                 <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-                    {station.equipments.map((equipment) => (
-                        <EquipmentCard
-                            key={equipment.id}
-                            equipment={equipment}
-                        />
-                    ))}
+                    {station.equipments.map((equipment) => {
+                        console.log('station', station)
+                        const equipmentAlarms = station.alarms.filter(
+                            alarm => alarm.equipmentId === equipment.id
+                        );
+                        console.log('equipmentAlarms', equipmentAlarms)
+                        return (
+                            <EquipmentCard
+                                key={equipment.id}
+                                equipment={equipment}
+                                alarms={equipmentAlarms}
+                            />
+                        )
+                    })}
                 </section>
                 {flowRateMeasurement && (
                     <section className="mt-8">

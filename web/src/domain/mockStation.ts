@@ -54,4 +54,15 @@ export const mockStation: Station = {
       ],
     },
   ],
+  alarms: [
+    {
+      id: "alarm-pump-1-temperature",
+      type: "high-temperature",
+      severity: "critical",
+      status: "active",
+      equipmentId: "pump-01",
+      measurementId: "pump-01-temperature",
+      triggeredAt: "2026-07-26T18:30:00Z",
+    },
+  ],
 };

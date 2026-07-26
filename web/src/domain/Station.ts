@@ -1,3 +1,4 @@
+import type { Alarm } from "./alarm";
 import type { Equipment } from "./Equipment";
 
 export type StationConnectionStatus = "online" | "offline" | "connecting";
@@ -8,4 +9,5 @@ export type Station = {
   connectionStatus: StationConnectionStatus;
   lastUpdatedAt: Date;
   equipments: Equipment[];
+  alarms: Alarm[];
 };
