@@ -7,10 +7,7 @@ type AlarmBadgeProps = {
 };
 
 export const AlarmBadge = ({ alarm }: AlarmBadgeProps) => {
-    const presentation = getAlarmPresentation(
-        alarm.type,
-        alarm.severity,
-    );
+    const presentation = getAlarmPresentation(alarm);
 
     return (
         <span

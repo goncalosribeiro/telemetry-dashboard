@@ -6,6 +6,7 @@ import { mockStation } from "../domain/mockStation";
 import type { Station } from "../domain/Station";
 import { createTelemetrySimulator } from "../services/createTelemetrySimulator";
 import { TelemetryChart } from "../components/TelemetryChart";
+import { evaluateAlarms } from "../domain/evaluateAlarms";
 
 type TelemetryPoint = {
     timestamp: Date;
@@ -22,9 +23,14 @@ export function StationDashboardPage() {
         const simulator = createTelemetrySimulator(mockStation);
 
         const stopSimulator = simulator.start((newStation) => {
-            setStation(newStation);
+            const evaluatedStation: Station = {
+                ...newStation,
+                alarms: evaluateAlarms(newStation),
+            };
 
-            const flowRateMeasurement = newStation.equipments
+            setStation(evaluatedStation);
+
+            const flowRateMeasurement = evaluatedStation.equipments
                 .flatMap((equipment) => equipment.measurements)
                 .find((measurement) => measurement.key === "flow-rate");
 
@@ -32,7 +38,7 @@ export function StationDashboardPage() {
                 setFlowRateHistory((currentHistory) => [
                     ...currentHistory.slice(-29),
                     {
-                        timestamp: newStation.lastUpdatedAt,
+                        timestamp: evaluatedStation.lastUpdatedAt,
                         value: flowRateMeasurement.value,
                     },
                 ]);
@@ -53,11 +59,10 @@ export function StationDashboardPage() {
 
                 <section className="mt-8 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
                     {station.equipments.map((equipment) => {
-                        console.log('station', station)
                         const equipmentAlarms = station.alarms.filter(
                             alarm => alarm.equipmentId === equipment.id
                         );
-                        console.log('equipmentAlarms', equipmentAlarms)
+
                         return (
                             <EquipmentCard
                                 key={equipment.id}

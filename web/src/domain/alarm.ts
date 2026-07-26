@@ -1,8 +1,10 @@
+import type { ThresholdDirection } from "./Equipment";
+
 export type AlarmSeverity = "warning" | "critical";
 
-export type AlarmStatus = "active" | "acknowledged";
+export type AlarmStatus = "active" | "acknowledged" | "resolved";
 
-export type AlarmType = "high-temperature" | "low-flow" | "maintenance-due";
+export type AlarmType = "measurement-threshold-exceeded" | "maintenance-due";
 
 export type Alarm = {
   id: string;
@@ -10,6 +12,7 @@ export type Alarm = {
   severity: AlarmSeverity;
   status: AlarmStatus;
   equipmentId: string;
-  measurementId?: string;
+  measurementKey?: string;
+  direction?: ThresholdDirection;
   triggeredAt: string;
 };

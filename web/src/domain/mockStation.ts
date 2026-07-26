@@ -11,6 +11,14 @@ export const mockStation: Station = {
       name: "Main Pump",
       type: "pump",
       operationalStatus: "running",
+      thresholds: [
+        {
+          measurementKey: "flow-rate",
+          direction: "below",
+          warning: 14.5,
+          critical: 14,
+        },
+      ],
       measurements: [
         {
           key: "flow-rate",
@@ -33,6 +41,14 @@ export const mockStation: Station = {
       name: "Water Quality Sensor",
       type: "water-quality-sensor",
       operationalStatus: "running",
+      thresholds: [
+        {
+          measurementKey: "ph",
+          direction: "below",
+          warning: 6.8,
+          critical: 6.5,
+        },
+      ],
       measurements: [
         {
           key: "ph",
@@ -57,11 +73,12 @@ export const mockStation: Station = {
   alarms: [
     {
       id: "alarm-pump-1-temperature",
-      type: "high-temperature",
+      type: "measurement-threshold-exceeded",
       severity: "critical",
       status: "active",
       equipmentId: "pump-01",
-      measurementId: "pump-01-temperature",
+      measurementKey: "flow-rate",
+      direction: "below",
       triggeredAt: "2026-07-26T18:30:00Z",
     },
   ],
