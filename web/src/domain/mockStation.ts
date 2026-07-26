@@ -26,12 +26,6 @@ export const mockStation: Station = {
           value: 4.2,
           unit: "bar",
         },
-        {
-          key: "flow-rate",
-          label: "Flow rate",
-          value: 38.6,
-          unit: "m³/h",
-        },
       ],
     },
     {

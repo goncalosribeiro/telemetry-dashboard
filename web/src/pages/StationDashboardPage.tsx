@@ -59,16 +59,18 @@ export function StationDashboardPage() {
                         />
                     ))}
                 </section>
+                {flowRateMeasurement && (
+                    <section className="mt-8">
+                        <TelemetryChart
+                            points={flowRateHistory}
+                            label={flowRateMeasurement.label}
+                            unit={flowRateMeasurement.unit}
+                            minValue={flowRateMeasurement.minValue}
+                            maxValue={flowRateMeasurement.maxValue}
+                        />
+                    </section>
+                )}
             </div>
-            {flowRateMeasurement && (
-                <TelemetryChart
-                    points={flowRateHistory}
-                    label={flowRateMeasurement.label}
-                    unit={flowRateMeasurement.unit}
-                    minValue={flowRateMeasurement.minValue}
-                    maxValue={flowRateMeasurement.maxValue}
-                />
-            )}
         </main>
     );
 }

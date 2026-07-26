@@ -6,15 +6,19 @@ export function createTelemetrySimulator(initialStation: Station) {
   return {
     start(callback: (station: Station) => void) {
       const intervalId = window.setInterval(() => {
-        const firstEquipment = currentStation.equipments[0];
+        const targetEquipment = currentStation.equipments.find(
+          (equipment) => equipment.id === "pump-01",
+        );
 
-        if (!firstEquipment) {
+        if (!targetEquipment) {
           return;
         }
 
-        const firstMeasurement = firstEquipment.measurements[0];
+        const targetMeasurement = targetEquipment.measurements.find(
+          (measurement) => measurement.key === "flow-rate",
+        );
 
-        if (!firstMeasurement) {
+        if (!targetMeasurement) {
           return;
         }
 
@@ -23,25 +27,23 @@ export function createTelemetrySimulator(initialStation: Station) {
         currentStation = {
           ...currentStation,
           lastUpdatedAt: new Date(),
-          equipments: currentStation.equipments.map((equipment, index) => {
-            if (index !== 0) {
+          equipments: currentStation.equipments.map((equipment) => {
+            if (equipment.id !== targetEquipment.id) {
               return equipment;
             }
 
             return {
               ...equipment,
-              measurements: equipment.measurements.map(
-                (measurement, measurementIndex) => {
-                  if (measurementIndex !== 0) {
-                    return measurement;
-                  }
+              measurements: equipment.measurements.map((measurement) => {
+                if (measurement.key !== targetMeasurement.key) {
+                  return measurement;
+                }
 
-                  return {
-                    ...measurement,
-                    value: measurement.value + variation,
-                  };
-                },
-              ),
+                return {
+                  ...measurement,
+                  value: measurement.value + variation,
+                };
+              }),
             };
           }),
         };
