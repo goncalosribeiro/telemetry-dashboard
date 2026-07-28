@@ -3,6 +3,7 @@ import { EquipmentCard } from "../components/EquipmentCard";
 import { StationHeader } from "../components/StationHeader";
 import type { Station } from "../domain/Station";
 import { TelemetryChart } from "../components/TelemetryChart";
+import { connectToStationStream } from "../services/connectToStationStream";
 import { fetchStation } from "../services/fetchStation";
 
 type TelemetryPoint = {
@@ -18,6 +19,27 @@ export function StationDashboardPage() {
 
   useEffect(() => {
     let isCancelled = false;
+    let disconnectFromStationStream: (() => void) | null = null;
+
+    const updateFlowRateHistory = (nextStation: Station) => {
+      const flowRateMeasurement = nextStation.equipments
+        .flatMap((equipment) => equipment.measurements)
+        .find((measurement) => measurement.key === "flow-rate");
+
+      setFlowRateHistory((currentHistory) => {
+        if (!flowRateMeasurement) {
+          return [];
+        }
+
+        return [
+          ...currentHistory.slice(-29),
+          {
+            timestamp: nextStation.lastUpdatedAt,
+            value: flowRateMeasurement.value,
+          },
+        ];
+      });
+    };
 
     const loadStation = async () => {
       setIsLoading(true);
@@ -31,21 +53,18 @@ export function StationDashboardPage() {
         }
 
         setStation(loadedStation);
+        updateFlowRateHistory(loadedStation);
 
-        const flowRateMeasurement = loadedStation.equipments
-          .flatMap((equipment) => equipment.measurements)
-          .find((measurement) => measurement.key === "flow-rate");
+        disconnectFromStationStream = connectToStationStream({
+          onStationSnapshot: (nextStation) => {
+            if (isCancelled) {
+              return;
+            }
 
-        setFlowRateHistory(
-          flowRateMeasurement
-            ? [
-                {
-                  timestamp: loadedStation.lastUpdatedAt,
-                  value: flowRateMeasurement.value,
-                },
-              ]
-            : [],
-        );
+            setStation(nextStation);
+            updateFlowRateHistory(nextStation);
+          },
+        });
       } catch (error) {
         if (isCancelled) {
           return;
@@ -67,6 +86,7 @@ export function StationDashboardPage() {
 
     return () => {
       isCancelled = true;
+      disconnectFromStationStream?.();
     };
   }, []);
 
