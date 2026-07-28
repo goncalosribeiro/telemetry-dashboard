@@ -1,7 +1,9 @@
 import type { StationSnapshotMessage } from "../contracts/realtimeMessage";
 import { toStation } from "../mappers/toStation";
 
-const STATION_STREAM_URL = "ws://localhost:3000/ws";
+const webSocketBaseUrl =
+  import.meta.env.VITE_WS_BASE_URL ?? "ws://localhost:3000";
+const STATION_STREAM_URL = `${webSocketBaseUrl}/ws`;
 
 type ConnectToStationStreamOptions = {
   onStationSnapshot: (station: ReturnType<typeof toStation>) => void;

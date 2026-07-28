@@ -6,7 +6,7 @@ import { toStationDto } from "./mappers/toStationDto.js";
 import { createTelemetrySimulator } from "./services/createTelemetrySimulator.js";
 import { WebSocketServer } from "ws";
 
-const PORT = 3000;
+const PORT = Number(process.env.PORT ?? 3000);
 const server = createServer(app);
 const webSocketServer = new WebSocketServer({
   server,
