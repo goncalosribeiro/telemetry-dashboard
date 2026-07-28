@@ -1,191 +1,145 @@
 # AquaPulse Telemetry Dashboard
 
-AquaPulse is a full-stack industrial telemetry platform designed to monitor pumping stations and water infrastructure in real time.
+AquaPulse is an industrial telemetry platform focused on monitoring pumping stations and water infrastructure with clarity, reliability, and real-time operational insight.
 
-The project aims to demonstrate the architecture and implementation of a modern industrial monitoring platform, combining real-time telemetry, interactive process visualisation and scalable full-stack engineering.
+The project is designed as a modern full-stack monitoring system inspired by SCADA environments, combining telemetry, alarm visibility, process awareness, and a scalable product architecture that can evolve toward production-grade deployments.
 
-Inspired by industrial SCADA systems, AquaPulse focuses on clean architecture, modular design and modern web technologies while remaining approachable as a portfolio project.
+## Vision
 
----
+AquaPulse exists to make operational data easier to understand and act on.
 
-## Overview
+Instead of treating telemetry as isolated numbers, the platform aims to connect live measurements, equipment status, alarms, and process context into a single operator experience. The goal is to support faster decisions, better situational awareness, and a more intuitive understanding of industrial systems.
 
-AquaPulse enables operators to monitor pumping stations through multiple complementary views.
+## Product Goals
 
-The dashboard provides live telemetry, equipment status and historical trends, while the Visual Flow module offers an interactive representation of the monitored installation, making it easier to understand how equipment is connected and how data flows through the system.
+- Monitor pumping stations in real time
+- Visualize equipment health and operational status
+- Surface alarms and threshold breaches clearly
+- Present telemetry history and trends
+- Represent process flow in a more intuitive way
+- Support growth from a portfolio project into a production-inspired platform
 
-The project is intentionally designed to evolve incrementally into a production-inspired industrial monitoring platform.
+## Platform Overview
 
----
-
-## Architecture
-
-```text
-                    Industrial Equipment
-                             │
-                             ▼
-                    Telemetry Gateway
-                             │
-                  REST API & WebSockets
-                             │
-                             ▼
-                     Node.js Backend
-                             │
-            Business Logic & Domain Services
-                             │
-                             ▼
-                    PostgreSQL Database
-                             │
-                             ▼
-               React Telemetry Dashboard
-                             │
-            ┌────────────────┴────────────────┐
-            ▼                                 ▼
-     Telemetry Dashboard             Visual Flow
-```
-
----
-
-## Technology Stack
-
-### Frontend
-
-- React
-- TypeScript
-- Vite
-- Tailwind CSS
-- Apache ECharts
-- React Flow *(planned)*
-
-### Backend
-
-- Node.js
-- Express
-- REST API
-- WebSockets
-
-### Database
-
-- PostgreSQL
-
-### Infrastructure
-
-- Docker
-- Docker Compose
-
----
-
-## Project Structure
-
-```text
-src/
-│
-├── app/
-├── pages/
-├── features/
-│   ├── dashboard/
-│   ├── station/
-│   ├── equipment/
-│   ├── telemetry/
-│   └── visual-flow/
-│
-├── domain/
-├── services/
-├── shared/
-└── utils/
-```
-
-The project follows a feature-oriented architecture with a clear separation between domain logic, presentation and infrastructure.
-
----
-
-## Core Modules
+The platform is structured around a few core capabilities:
 
 ### Telemetry Dashboard
 
-Provides operators with a complete overview of the monitored installation.
-
-Features include:
+The dashboard is the operational center of the platform. It is intended to provide:
 
 - Station overview
-- Equipment monitoring
-- Live telemetry
-- Operational status
-- Historical charts
-- Threshold indicators
-- Responsive dashboard
-
----
+- Equipment-level health visibility
+- Live measurements
+- Trend charts
+- Alarm summaries
+- Clear operational states
+- Responsive interfaces for desktop and tablet usage
 
 ### Visual Flow
 
-An interactive process view representing the complete installation.
+The Visual Flow area is intended to represent the installation as a process, not only as data.
 
-Instead of analysing telemetry only through tables and charts, operators can inspect the physical process and understand how equipment interacts within the system.
+This module is planned to make it easier to understand how pumps, sensors, and other assets are connected, how flow moves through the system, and where an issue is happening in context.
 
-Planned capabilities include:
+Potential capabilities include:
 
 - Interactive process diagrams
-- Drag-and-drop editor
-- Equipment placement
-- Pipe and connection modelling
-- Live telemetry overlays
-- Equipment status indicators
-- Alarm highlighting
-- Zoom & pan navigation
-- Custom plant layouts
+- Equipment placement and layout editing
+- Connections between physical assets
+- Telemetry overlays on top of the process view
+- Alarm highlighting on affected components
+- Zoom and pan navigation
 
----
+### Alarm and Operational Awareness
 
-## Planned Features
+The platform is also designed to help operators move from passive monitoring to active awareness by:
 
-- Multiple pumping stations
-- Alarm management
-- Historical telemetry analysis
+- Detecting abnormal conditions
+- Highlighting warning and critical thresholds
+- Associating alarms with specific assets
+- Making system health readable at a glance
+
+## Architecture Direction
+
+```text
+                    Industrial Equipment
+                             |
+                             v
+                    Telemetry Collection Layer
+                             |
+                             v
+                 Backend Services and Domain Logic
+                             |
+                             v
+                    Monitoring APIs and Realtime
+                             |
+                             v
+                   Web Telemetry Experience Layer
+                             |
+            +----------------+----------------+
+            |                                 |
+            v                                 v
+     Telemetry Dashboard                Visual Flow
+```
+
+The long-term direction is a modular architecture with strong boundaries between domain logic, data access, presentation, and integration layers.
+
+## Technology Direction
+
+The project is being shaped around a modern TypeScript-first stack with room for real-time communication, rich visualization, and incremental backend evolution.
+
+Typical building blocks for the platform include:
+
+- React for the web interface
+- TypeScript across frontend and backend
+- Node.js services for APIs and telemetry orchestration
+- Real-time delivery for live operational updates
+- Charting and visual analytics for telemetry exploration
+- Containerized deployment for reproducibility and scalability
+
+## Planned Capabilities
+
+- Multi-station support
+- Historical telemetry persistence
+- Advanced alarm management
 - Equipment detail pages
-- Telemetry filtering
-- User authentication
-- Role-based permissions
-- Persistent telemetry storage
-- MQTT integration
-- OPC-UA integration
-- Docker deployment
-
----
+- Filtering and exploration of measurements
+- Authentication and role-based access control
+- Integration with industrial protocols
+- Deployment-ready infrastructure
+- More advanced process visualization
 
 ## Engineering Principles
 
-AquaPulse is designed to demonstrate software engineering practices commonly used in modern industrial applications.
+The project is guided by a set of engineering principles intended to keep it maintainable as it grows:
 
-Key concepts include:
+- Clear separation of concerns
+- Strong domain modeling
+- Scalable frontend structure
+- Reusable application building blocks
+- Typed contracts across layers
+- Evolvable architecture over one-off implementation
+- Readable, maintainable code over accidental complexity
 
-- Feature-first architecture
-- Domain-driven frontend modelling
-- Strong TypeScript typing
-- Immutable state updates
-- Separation of concerns
-- Component composition
-- Reusable domain models
-- Scalable frontend architecture
-- Real-time application design
-- Interactive process visualisation
-- Graph-based user interfaces
-- Clean Code principles
+## Why This Project
 
----
+Industrial telemetry platforms sit at the intersection of several interesting engineering problems: real-time systems, visualization, domain modeling, operational UX, and scalable application architecture.
 
-## Data Visualisation
+AquaPulse is meant to bring those concerns together in a single cohesive product direction. The objective is not only to build a dashboard, but to explore how a complete industrial monitoring platform can be designed with product thinking and software engineering discipline from the start.
 
-Telemetry is visualised using Apache ECharts, providing rich and interactive time-series charts for industrial monitoring.
+## Current Implementation
 
-The Visual Flow module complements traditional dashboards by representing the monitored process as an interactive graph, enabling operators to understand equipment relationships and system behaviour at a glance.
+At this stage, the project already includes a first functional slice of the platform.
 
----
+The current implementation focuses on a single station monitoring experience and serves as the foundation for the broader product vision described above.
 
-## Why This Project?
+What is already in place:
 
-Industrial telemetry platforms combine several engineering challenges rarely found together in typical portfolio projects.
+- A web dashboard for viewing station telemetry
+- Equipment cards with operational status visibility
+- A telemetry chart for key measurements
+- A backend API serving station data
+- A simple in-memory telemetry simulation to mimic live updates
+- Shared domain modeling across backend and frontend
 
-AquaPulse brings together frontend architecture, backend services, real-time communication, interactive visualisation and domain modelling in a single application inspired by real industrial systems.
-
-The objective is not simply to build a dashboard, but to demonstrate the design of a complete monitoring platform that could evolve towards a production-ready solution.
+This means the project is no longer only conceptual: the product direction is already being translated into working software, with the current implementation acting as the first step toward a more complete industrial telemetry platform.
