@@ -1,4 +1,5 @@
 import { getStationSnapshot, replaceStationSnapshot } from "../data/stationStore.js";
+import { evaluateAlarms } from "../domain/evaluateAlarms.js";
 import type { Station } from "../domain/station.js";
 
 const FLOW_RATE_VARIATION_RANGE = 0.2;
@@ -60,8 +61,13 @@ export const createTelemetrySimulator = (
       }),
     };
 
-    replaceStationSnapshot(nextStation);
-    options.onStationUpdated?.(nextStation);
+    const evaluatedStation = {
+      ...nextStation,
+      alarms: evaluateAlarms(nextStation),
+    };
+
+    replaceStationSnapshot(evaluatedStation);
+    options.onStationUpdated?.(evaluatedStation);
   };
 
   return {

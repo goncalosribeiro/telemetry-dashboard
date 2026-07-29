@@ -1,145 +1,58 @@
 # AquaPulse Telemetry Dashboard
 
-AquaPulse is an industrial telemetry platform focused on monitoring pumping stations and water infrastructure with clarity, reliability, and real-time operational insight.
+AquaPulse is a portfolio project for monitoring a water pumping station. It demonstrates a React and TypeScript frontend consuming a Node.js backend that exposes simulated operational telemetry in real time.
 
-The project is designed as a modern full-stack monitoring system inspired by SCADA environments, combining telemetry, alarm visibility, process awareness, and a scalable product architecture that can evolve toward production-grade deployments.
+## Current capabilities
 
-## Vision
+- dashboard for a pumping station and its equipment;
+- current measurements, operational status and alarms;
+- recent flow-rate chart built with Apache ECharts;
+- REST endpoint for the initial station snapshot;
+- WebSocket stream for real-time station snapshots;
+- in-memory backend simulation that updates telemetry and evaluates critical alarm thresholds.
 
-AquaPulse exists to make operational data easier to understand and act on.
+## Architecture
 
-Instead of treating telemetry as isolated numbers, the platform aims to connect live measurements, equipment status, alarms, and process context into a single operator experience. The goal is to support faster decisions, better situational awareness, and a more intuitive understanding of industrial systems.
+The backend owns the operational state. It maintains the current station snapshot in memory, simulates telemetry, evaluates alarms and exposes the result through REST and WebSocket.
 
-## Product Goals
-
-- Monitor pumping stations in real time
-- Visualize equipment health and operational status
-- Surface alarms and threshold breaches clearly
-- Present telemetry history and trends
-- Represent process flow in a more intuitive way
-- Support growth from a portfolio project into a production-inspired platform
-
-## Platform Overview
-
-The platform is structured around a few core capabilities:
-
-### Telemetry Dashboard
-
-The dashboard is the operational center of the platform. It is intended to provide:
-
-- Station overview
-- Equipment-level health visibility
-- Live measurements
-- Trend charts
-- Alarm summaries
-- Clear operational states
-- Responsive interfaces for desktop and tablet usage
-
-### Visual Flow
-
-The Visual Flow area is intended to represent the installation as a process, not only as data.
-
-This module is planned to make it easier to understand how pumps, sensors, and other assets are connected, how flow moves through the system, and where an issue is happening in context.
-
-Potential capabilities include:
-
-- Interactive process diagrams
-- Equipment placement and layout editing
-- Connections between physical assets
-- Telemetry overlays on top of the process view
-- Alarm highlighting on affected components
-- Zoom and pan navigation
-
-### Alarm and Operational Awareness
-
-The platform is also designed to help operators move from passive monitoring to active awareness by:
-
-- Detecting abnormal conditions
-- Highlighting warning and critical thresholds
-- Associating alarms with specific assets
-- Making system health readable at a glance
-
-## Architecture Direction
+The frontend loads the initial snapshot with REST, receives later snapshots through WebSocket and keeps only the short history needed to render the chart.
 
 ```text
-                    Industrial Equipment
-                             |
-                             v
-                    Telemetry Collection Layer
-                             |
-                             v
-                 Backend Services and Domain Logic
-                             |
-                             v
-                    Monitoring APIs and Realtime
-                             |
-                             v
-                   Web Telemetry Experience Layer
-                             |
-            +----------------+----------------+
-            |                                 |
-            v                                 v
-     Telemetry Dashboard                Visual Flow
+Backend in-memory store
+  ├─ GET /api/stations/:stationId → initial snapshot
+  └─ WebSocket /ws               → real-time snapshots
+                                    ↓
+                             React dashboard
 ```
 
-The long-term direction is a modular architecture with strong boundaries between domain logic, data access, presentation, and integration layers.
+## Stack
 
-## Technology Direction
+- React, TypeScript, Vite and Tailwind CSS;
+- Apache ECharts;
+- Node.js, Express, TypeScript and `ws`.
 
-The project is being shaped around a modern TypeScript-first stack with room for real-time communication, rich visualization, and incremental backend evolution.
+## Local development
 
-Typical building blocks for the platform include:
+Start the backend:
 
-- React for the web interface
-- TypeScript across frontend and backend
-- Node.js services for APIs and telemetry orchestration
-- Real-time delivery for live operational updates
-- Charting and visual analytics for telemetry exploration
-- Containerized deployment for reproducibility and scalability
+```bash
+cd api
+npm install
+npm run dev
+```
 
-## Planned Capabilities
+In another terminal, start the frontend:
 
-- Multi-station support
-- Historical telemetry persistence
-- Advanced alarm management
-- Equipment detail pages
-- Filtering and exploration of measurements
-- Authentication and role-based access control
-- Integration with industrial protocols
-- Deployment-ready infrastructure
-- More advanced process visualization
+```bash
+cd web
+npm install
+npm run dev
+```
 
-## Engineering Principles
+The frontend runs on `http://localhost:5173` and proxies `/api` to the backend on port `3000`. The WebSocket server is available at `ws://localhost:3000/ws`.
 
-The project is guided by a set of engineering principles intended to keep it maintainable as it grows:
+Copy each `.env.example` file to `.env` when local configuration needs to change. Vite loads `web/.env` automatically; the backend currently uses the `PORT` environment variable supplied by the shell.
 
-- Clear separation of concerns
-- Strong domain modeling
-- Scalable frontend structure
-- Reusable application building blocks
-- Typed contracts across layers
-- Evolvable architecture over one-off implementation
-- Readable, maintainable code over accidental complexity
+## Scope
 
-## Why This Project
-
-Industrial telemetry platforms sit at the intersection of several interesting engineering problems: real-time systems, visualization, domain modeling, operational UX, and scalable application architecture.
-
-AquaPulse is meant to bring those concerns together in a single cohesive product direction. The objective is not only to build a dashboard, but to explore how a complete industrial monitoring platform can be designed with product thinking and software engineering discipline from the start.
-
-## Current Implementation
-
-At this stage, the project already includes a first functional slice of the platform.
-
-The current implementation focuses on a single station monitoring experience and serves as the foundation for the broader product vision described above.
-
-What is already in place:
-
-- A web dashboard for viewing station telemetry
-- Equipment cards with operational status visibility
-- A telemetry chart for key measurements
-- A backend API serving station data
-- A simple in-memory telemetry simulation to mimic live updates
-- Shared domain modeling across backend and frontend
-
-This means the project is no longer only conceptual: the product direction is already being translated into working software, with the current implementation acting as the first step toward a more complete industrial telemetry platform.
+This project intentionally has no Docker, database, persistence or authentication. Future increments may add a monitoring map and a visual automation-flow editor, but the current focus is a clear real-time telemetry foundation.

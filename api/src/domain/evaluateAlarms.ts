@@ -1,6 +1,6 @@
-import type { Alarm } from "./alarm";
-import type { ThresholdDirection } from "./Equipment";
-import type { Station } from "./Station";
+import type { ThresholdDirection } from "./equipment.js";
+import type { Alarm } from "./alarm.js";
+import type { Station } from "./station.js";
 
 type ThresholdViolationParams = {
   value: number;
@@ -21,23 +21,15 @@ const isThresholdViolated = ({
 };
 
 export const evaluateAlarms = (station: Station): Alarm[] => {
-  const evaluatedAlarms: Alarm[] = station.alarms.map((alarm) => ({
-    ...alarm,
-  }));
+  const evaluatedAlarms = station.alarms.map((alarm) => ({ ...alarm }));
 
   for (const equipment of station.equipments) {
-    const thresholds = equipment.thresholds ?? [];
-
-    for (const threshold of thresholds) {
+    for (const threshold of equipment.thresholds) {
       const measurement = equipment.measurements.find(
         ({ key }) => key === threshold.measurementKey,
       );
 
-      if (!measurement) {
-        continue;
-      }
-
-      if (threshold.critical === undefined) {
+      if (!measurement || threshold.critical === undefined) {
         continue;
       }
 
@@ -48,7 +40,6 @@ export const evaluateAlarms = (station: Station): Alarm[] => {
       });
 
       const alarmId = `${equipment.id}-${threshold.measurementKey}-critical`;
-
       const existingAlarm = evaluatedAlarms.find(({ id }) => id === alarmId);
 
       if (!isViolated) {
@@ -68,7 +59,7 @@ export const evaluateAlarms = (station: Station): Alarm[] => {
         continue;
       }
 
-      const alarm: Alarm = {
+      evaluatedAlarms.push({
         id: alarmId,
         type: "measurement-threshold-exceeded",
         severity: "critical",
@@ -77,9 +68,7 @@ export const evaluateAlarms = (station: Station): Alarm[] => {
         measurementKey: threshold.measurementKey,
         direction: threshold.direction,
         triggeredAt: new Date().toISOString(),
-      };
-
-      evaluatedAlarms.push(alarm);
+      });
     }
   }
 
